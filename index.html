@@ -1,0 +1,80 @@
+<!doctype html>
+<html ng-app="parking">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="AngularJs Learning Phase">
+<meta name="keywords" content="HTML,AngularJs">
+<meta name="author" content="Lokesh Chandawar">
+<title>[Packt] Parking</title>
+<script src="angular.js"></script>
+<script src="angular-sanitize.js"></script>
+<script>
+var parking= angular.module("parking",[]);
+parking.controller("parkingCtrl",function($scope){
+$scope.appTitle="[Packt] Parking";
+//$scope.appTitle="<b>[Packt] Parking</b>";'
+$scope.cars=[];
+$scope.colors = ["White", "Black", "Blue", "Red",
+"Silver"];
+$scope.park = function (car) {
+car.entrance = new Date();
+$scope.cars.push(car);
+delete $scope.car;
+};
+});
+</script>
+<style>
+.selected {
+background-color: #FAFAD2;
+}
+</style>
+</head>
+<body ng-controller="parkingCtrl">
+<h3 ng-bind="appTitle"></h3>
+<!-- <h3 ng-bind-html="appTitle"></h3> -->
+<div ng-show="cars.length > 0">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Plate</th>
+<th>Color</th>
+<th>Entrance</th>
+</tr>
+</thead>
+<tbody>
+<tr 
+ng-class="{selected: car.selected}"
+ng-repeat="car in cars">
+<td><input type="checkbox" ngmodel="
+car.selected"/></td>
+<td><span ng-bind="car.plate"></span></td>
+<td><span ng-bind="car.color" ng-style="{color: car.color}"></span></td>
+<td><span ng-bind="car.entrance"></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div ng-hide="cars.length > 0">
+The parking lot is empty
+</div>
+<input
+type="text"
+ng-model="car.plate"
+placeholder="What's the plate?"
+/>
+<!-- <button ng-click="park(car)">Park</button> -->
+<select
+ng-model="car.color"
+ng-options="color for color in colors"
+>
+Pick a color
+</select>
+<button
+ng-click="park(car)"
+ng-disabled="!car.plate"
+>
+Park
+</button>
+</body>
+</html>
